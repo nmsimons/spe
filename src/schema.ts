@@ -15,7 +15,7 @@ export class StringList extends sf.list('StringList', sf.string) {
 }
 
 export class App extends sf.object('App', {
-    stringList: StringList,    
+    stringList: StringList,
 }) {}
 
 // Specify the root type - App.
@@ -26,6 +26,6 @@ export const treeConfiguration = new TreeConfiguration(
     App,
     () =>
         new App({
-            stringList: []
+            stringList: [],
         })
 );

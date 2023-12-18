@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client';
 import { loadFluidData, containerSchema } from './infra/fluid';
 import { initializeDevtools } from '@fluid-experimental/devtools';
 import {    
-    clientId,    
     devtoolsLogger,
     getClientProps,
 } from './infra/clientProps';
@@ -12,30 +11,13 @@ import { ITree } from '@fluid-experimental/tree2';
 import { treeConfiguration } from './schema';
 import './output.css';
 import { ReactApp } from './react_app';
-import {
-    PublicClientApplication,        
-} from '@azure/msal-browser';
 import { OdspTestTokenProvider } from './infra/tokenProvider';
 import { GraphHelper } from './infra/graphHelper';
+import { authHelper as initializeAuth } from './infra/authHelper';
 
 async function start() {
-    const msalConfig = {
-        auth: {
-            clientId,
-            authority: 'https://login.microsoftonline.com/common/',
-            tenantId: 'common',
-        },
-    };
-    const msalInstance = new PublicClientApplication(msalConfig);
-    await msalInstance.initialize();
-
-    // This will only work if loginPopup is synchronous, otherwise, you may need to handle the response in a different way
-    await msalInstance.loginPopup({
-        scopes: ['FileStorageContainer.Selected'],
-    });
-
-    const account = msalInstance.getAllAccounts()[0];
-    msalInstance.setActiveAccount(account);
+    
+    const { msalInstance, account } = await initializeAuth();
 
     const graphHelper = new GraphHelper(msalInstance, account);
     
