@@ -1,4 +1,4 @@
-import { OdspClient, OdspClientProps, OdspContainerServices } from "@fluid-experimental/odsp-client";
+import { OdspClient, OdspContainerServices } from "@fluid-experimental/odsp-client";
 import { ContainerSchema, IFluidContainer } from 'fluid-framework';
 import { SharedTree } from '@fluid-experimental/tree2';
 
@@ -11,15 +11,13 @@ import { SharedTree } from '@fluid-experimental/tree2';
 export const loadFluidData = async (
     containerId: string,
     containerSchema: ContainerSchema,
-    clientProps: OdspClientProps
+    client: OdspClient
 ): Promise<{
     services: OdspContainerServices;
 	container: IFluidContainer;
 }> => {
     let container: IFluidContainer;
-    let services: OdspContainerServices;
-
-    const client = new OdspClient(clientProps);
+    let services: OdspContainerServices;    
 
     // Get or create the document depending if we are running through the create new flow
     if (containerId.length === 0) {

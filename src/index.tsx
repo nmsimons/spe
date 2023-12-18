@@ -14,12 +14,24 @@ import { ReactApp } from './react_app';
 import { OdspTestTokenProvider } from './infra/tokenProvider';
 import { GraphHelper } from './infra/graphHelper';
 import { authHelper as initializeAuth } from './infra/authHelper';
+import { OdspClient } from '@fluid-experimental/odsp-client';
+
+export const clientId = '19abc360-c059-48d8-854e-cfeef9a3c5b8';
+export const containerTypeId = '6d740a46-9d72-41f3-b321-8ee1f72a1564';
 
 async function start() {
     
     const { msalInstance, account } = await initializeAuth();
 
     const graphHelper = new GraphHelper(msalInstance, account);
+
+    const clientProps = getClientProps(
+        await graphHelper.getSiteUrl(),
+        await graphHelper.getFileStorageContainerId(),
+        new OdspTestTokenProvider(msalInstance)
+    )
+
+    const client = new OdspClient(clientProps);
     
     // create the root element for React
     const app = document.createElement('div');
@@ -30,17 +42,13 @@ async function start() {
     // Get the root container id from the URL
     // If there is no container id, then the app will make
     // a new container.
-    let containerId = location.hash.substring(1);
+    let containerId = location.hash.substring(1);    
 
     // Initialize Fluid Container - this will either make a new container or load an existing one
     const { container } = await loadFluidData(
         containerId,
         containerSchema,
-        getClientProps(
-            await graphHelper.getSiteUrl(),
-            await graphHelper.getFileStorageContainerId(),
-            new OdspTestTokenProvider(msalInstance)
-        )
+        client
     );
 
     // Initialize the SharedTree Data Structure

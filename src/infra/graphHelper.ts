@@ -9,7 +9,14 @@ import {
     AuthCodeMSALBrowserAuthenticationProviderOptions,
 } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { Site } from '@microsoft/microsoft-graph-types';
-import { containerTypeId, FileStorageContainer } from './clientProps';
+import { containerTypeId } from '..';
+
+export interface FileStorageContainer {
+    containerTypeId: string;
+    createdDateTime: string;
+    displayName: string;
+    id: string;
+}
 
 export class GraphHelper {
     private readonly intializedPublicClientApplication: PublicClientApplication;

@@ -1,5 +1,5 @@
 import { PublicClientApplication } from "@azure/msal-browser";
-import { clientId } from "./clientProps";
+import { clientId } from "..";
 
 export async function authHelper() {
     const msalConfig = {
