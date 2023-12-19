@@ -1,6 +1,6 @@
 import { OdspClient, OdspContainerServices } from "@fluid-experimental/odsp-client";
 import { ContainerSchema, IFluidContainer } from 'fluid-framework';
-import { SharedTree } from '@fluid-experimental/tree2';
+import { SharedTree } from '@fluidframework/tree';
 
 /**
  * This function will create a container if no container ID is passed on the hash portion of the URL.

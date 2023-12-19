@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { TreeView, Tree } from '@fluid-experimental/tree2';
-import { App, StringList } from './schema';
+import { TreeView, Tree } from '@fluidframework/tree';
+import { App, StringArray } from './schema';
 
 export function ReactApp(props: { data: TreeView<App> }): JSX.Element {
     const [invalidations, setInvalidations] = useState(0);
@@ -19,31 +19,31 @@ export function ReactApp(props: { data: TreeView<App> }): JSX.Element {
     return (
         <div className="flex flex-col gap-3 items-center justify-center content-center m-6">
             <div className="flex flex-row gap-3 justify-center flex-wrap w-full h-full">
-                <ListGroup list={app.stringList} />                
+                <ArrayGroup array={app.stringArray} />                
             </div>
             <Explanation />
         </div>
     );
 }
 
-export function ListGroup(props: {
-    list: StringList;        
+export function ArrayGroup(props: {
+    array: StringArray;        
 }): JSX.Element {
     return (
         <div className="flex flex-col gap-3 justify-center content-center m-6">
             <div className="flex flex-row gap-3 justify-center content-center ">
-                <ItemCount target={props.list} />
+                <ItemCount target={props.array} />
             </div>
             <div className="flex flex-row gap-3 justify-center content-center ">
-                <InsertButton target={props.list} />
-                <RemoveButton target={props.list} />                
+                <InsertButton target={props.array} />
+                <RemoveButton target={props.array} />                
             </div>
         </div>
     );
 }
 
 export function ItemCount(props: {
-    target: StringList;    
+    target: StringArray;    
 }): JSX.Element {
     // Show the length of the list
     return (
@@ -56,7 +56,7 @@ export function ItemCount(props: {
 }
 
 export function InsertButton(props: {
-    target: StringList;    
+    target: StringArray;    
 }): JSX.Element {
     const handleClick = () => {
         // Add an item to the beginning of the list
@@ -67,7 +67,7 @@ export function InsertButton(props: {
 }
 
 export function RemoveButton(props: {
-    target: StringList;    
+    target: StringArray;    
 }): JSX.Element {
     const handleClick = () => {
         // Remove the first item in the list if the list is not empty

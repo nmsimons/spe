@@ -2,12 +2,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { loadFluidData, containerSchema } from './infra/fluid';
-import { initializeDevtools } from '@fluid-experimental/devtools';
-import {    
-    devtoolsLogger,
-    getClientProps,
-} from './infra/clientProps';
-import { ITree } from '@fluid-experimental/tree2';
+import { devtoolsLogger, getClientProps } from './infra/clientProps';
 import { treeConfiguration } from './schema';
 import './output.css';
 import { ReactApp } from './react_app';
@@ -15,12 +10,13 @@ import { OdspTestTokenProvider } from './infra/tokenProvider';
 import { GraphHelper } from './infra/graphHelper';
 import { authHelper as initializeAuth } from './infra/authHelper';
 import { OdspClient } from '@fluid-experimental/odsp-client';
+import { ITree } from '@fluidframework/tree';
+import { initializeDevtools } from '@fluidframework/devtools';
 
 export const clientId = '19abc360-c059-48d8-854e-cfeef9a3c5b8';
 export const containerTypeId = '6d740a46-9d72-41f3-b321-8ee1f72a1564';
 
 async function start() {
-    
     const { msalInstance, account } = await initializeAuth();
 
     const graphHelper = new GraphHelper(msalInstance, account);
@@ -29,10 +25,10 @@ async function start() {
         await graphHelper.getSiteUrl(),
         await graphHelper.getFileStorageContainerId(),
         new OdspTestTokenProvider(msalInstance)
-    )
+    );
 
     const client = new OdspClient(clientProps);
-    
+
     // create the root element for React
     const app = document.createElement('div');
     app.id = 'app';
@@ -42,14 +38,10 @@ async function start() {
     // Get the root container id from the URL
     // If there is no container id, then the app will make
     // a new container.
-    let containerId = location.hash.substring(1);    
+    let containerId = location.hash.substring(1);
 
     // Initialize Fluid Container - this will either make a new container or load an existing one
-    const { container } = await loadFluidData(
-        containerId,
-        containerSchema,
-        client
-    );
+    const { container } = await loadFluidData(containerId, containerSchema, client);
 
     // Initialize the SharedTree Data Structure
     const appData = (container.initialObjects.appData as ITree).schematize(
